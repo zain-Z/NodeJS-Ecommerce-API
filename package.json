@@ -1,0 +1,27 @@
+{
+  "name": "nodejs-ecommerce-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "server": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "API",
+    "E-commerce",
+    "NodeJS"
+  ],
+  "author": "Zain Abo Almagd",
+  "license": "ISC",
+  "description": "NodeJS E-commerce API",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.3",
+    "nodemon": "^3.1.10"
+  }
+}

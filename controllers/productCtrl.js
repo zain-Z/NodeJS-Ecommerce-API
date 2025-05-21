@@ -118,3 +118,19 @@ export const getAllProductsCtrl = asyncHandler(async (req, res) => {
         pagination
     });
 });
+
+// @desc Get single product
+// @route GET /api/v1/products/:id
+// @access public
+
+export const getSingleProductCtrl = asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found");
+    }
+    res.status(200).json({
+        status: "success",
+        product
+    });
+});

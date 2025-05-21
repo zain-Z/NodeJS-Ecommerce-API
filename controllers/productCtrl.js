@@ -134,3 +134,34 @@ export const getSingleProductCtrl = asyncHandler(async (req, res) => {
         product
     });
 });
+
+// @desc Update product
+// @route PUT /api/v1/products/:id
+// @access Private/Admin
+
+export const updateProductCtrl = asyncHandler(async (req, res) => {
+    const { name, description, brand, category, price, sizes, colors, totalQty } = req.body;
+
+    // check if product exists
+    const product = await Product.findByIdAndUpdate(req.params.id, {
+        name,
+        description,
+        brand,
+        category,
+        price,
+        sizes,
+        colors,
+        totalQty
+    }, { new: true });
+
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found");
+    }
+
+    res.status(200).json({
+        status: "success",
+        message: "Product updated successfully",
+        product
+    });
+});

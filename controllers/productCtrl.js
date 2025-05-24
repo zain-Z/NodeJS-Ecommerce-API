@@ -1,5 +1,6 @@
 import Product from "../model/Product.js";
 import Category from "../model/Category.js";
+import Brand from "../model/Brand.js";
 import asyncHandler from "express-async-handler";
 
 // @desc create new product
@@ -24,12 +25,19 @@ export const createProductCtrl = asyncHandler(async (req, res) => {
         throw new Error("Invalid category");
     }
 
+    // find the brand
+    const foundBrand = await Brand.findOne({ name: brand });
+    if (!foundBrand) {
+        res.status(400);
+        throw new Error("Invalid brand");
+    }
+
     // create product
     const product = await Product.create({
         name,
         description,
-        brand,
-        category,
+        brand: foundBrand._id,
+        category: foundCategory._id,
         price,
         sizes,
         colors,
@@ -40,6 +48,10 @@ export const createProductCtrl = asyncHandler(async (req, res) => {
     // push product to category
     foundCategory.Products.push(product._id);
     await foundCategory.save();
+
+    // push product to brand
+    foundBrand.Products.push(product._id);
+    await foundBrand.save();
 
     res.status(201).json({
         status: "success",

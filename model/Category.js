@@ -11,7 +11,7 @@ const categorySchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    Products: [
+    products: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product"

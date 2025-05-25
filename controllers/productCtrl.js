@@ -32,6 +32,7 @@ export const createProductCtrl = asyncHandler(async (req, res) => {
         throw new Error("Invalid brand");
     }
 
+
     // create product
     const product = await Product.create({
         name,
@@ -46,11 +47,11 @@ export const createProductCtrl = asyncHandler(async (req, res) => {
     });
 
     // push product to category
-    foundCategory.Products.push(product._id);
+    foundCategory.products.push(product._id);
     await foundCategory.save();
 
     // push product to brand
-    foundBrand.Products.push(product._id);
+    foundBrand.products.push(product._id);
     await foundBrand.save();
 
     res.status(201).json({

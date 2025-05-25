@@ -1,5 +1,4 @@
-# 📦 Step-by-Step Guide to Building Full-Featured E-commerce APIs with MERN 
-# 📦 but this is only the Backend part
+# 📦 Step-by-Step Guide to Building Full-Featured E-commerce APIs with MERN but this is only the Backend part
 
 ---
 

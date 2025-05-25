@@ -15,7 +15,3 @@ const dbConnect = async () => {
 }
 
 export default dbConnect;
-
-// QYdiH8pTOSS8H6Ya
-
-// mongodb+srv://overzainking:QYdiH8pTOSS8H6Ya@nodejs-ecommerce-api.gzhyaea.mongodb.net/?retryWrites=true&w=majority&appName=nodejs-ecommerce-api

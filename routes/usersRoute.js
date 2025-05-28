@@ -1,10 +1,10 @@
 import express from 'express';
 import { registerUserCtrl, loginUserCtrl, getUserProfileCtrl } from '../controllers/usersCtrl.js';
-const userRoutes = express.Router();
+const usersRouter = express.Router();
 import { isLoggedIn } from '../middlewares/isLoggedIn.js';
 
-userRoutes.post('/register', registerUserCtrl);
-userRoutes.post('/login', loginUserCtrl);
-userRoutes.get('/profile', isLoggedIn, getUserProfileCtrl);
+usersRouter.post('/register', registerUserCtrl);
+usersRouter.post('/login', loginUserCtrl);
+usersRouter.get('/profile', isLoggedIn, getUserProfileCtrl);
 
-export default userRoutes;
+export default usersRouter;

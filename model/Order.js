@@ -30,6 +30,10 @@ const OrderSchema = new Schema({
         type: String,
         default: "Not specified",
     },
+    totalPrice: {
+        type: Number,
+        default: "Not 0.0",
+    },
     currency: {
         type: String,
         default: "Not specified",

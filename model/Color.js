@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const colorSchema = new mongoose.Schema({
+const ColorSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -14,5 +14,5 @@ const colorSchema = new mongoose.Schema({
     toJSON: { virtuals: true },
 });
 
-const Color = mongoose.model('Color', colorSchema);
+const Color = mongoose.model('Color', ColorSchema);
 export default Color;

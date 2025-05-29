@@ -1,6 +1,6 @@
-import Order from '../models/orderModel.js';
-import User from '../models/userModel.js';
-import Product from '../models/productModel.js';
+import User from '../model/User.js';
+import Product from '../model/Product.js';
+import Order from '../model/Order.js';
 import asyncHandler from 'express-async-handler';
 
 // @desc    Create new order
@@ -23,6 +23,11 @@ export const createOrderCtrl = asyncHandler(async (req, res) => {
         throw new Error('Not authorized, no user found');
     }
     
+    // Check if the user has a valid address
+    if (!user.hasShippingAddress) {
+        res.status(400);
+        throw new Error('Please add a shipping address');
+    }
 
     // Check if order items are an array and not empty
     if (!Array.isArray(req.body.orderItems) || req.body.orderItems.length === 0) {

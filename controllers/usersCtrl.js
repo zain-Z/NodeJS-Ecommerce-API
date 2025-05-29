@@ -8,7 +8,6 @@ import verifyToken from '../utils/verifyToken.js';
 // @desc  Register a new user
 // @route POST /api/v1/users/register
 // @access Private/Admin
-
 export const registerUserCtrl = asyncHandler(async (req, res) => {
     const { fullname, email, password } = req.body;
     // check if user already exists
@@ -171,3 +170,31 @@ export const updateUserPasswordCtrl = asyncHandler(async (req, res) => {
     });
 });
 
+// @desc Update user shipping address
+// @route PUT /api/v1/users/:id/shipping
+// @access Private/Admin
+export const updateUserShippingAddressCtrl = asyncHandler(async (req, res) => {
+    const { firstName, lastName, address, city, province, postalCode, country, phone } = req.body;
+    const user = await User.findByIdAndUpdate(req.userAuthId, {
+        shippingAddress: {
+            firstName,
+            lastName,
+            address,
+            city,
+            province,
+            postalCode,
+            country,
+            phone
+        },
+        hasShippingAddress: true
+    }, { new: true });
+    if (!user) {
+        throw new Error('User not found');
+    }
+    
+    res.status(200).json({
+        status: 'success',
+        message: 'User shipping address updated successfully',
+        data: user,
+    });
+});

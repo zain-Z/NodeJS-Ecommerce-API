@@ -72,4 +72,10 @@ export const createOrderCtrl = asyncHandler(async (req, res) => {
     // Make payment with Stripe
     // Payment webhook
     // Update the user order
+    res.status(201).json({
+        success: true,
+        message: 'Order created successfully',
+        order,
+        user
+    });
 });

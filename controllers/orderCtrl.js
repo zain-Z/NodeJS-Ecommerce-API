@@ -2,6 +2,9 @@ import User from '../model/User.js';
 import Product from '../model/Product.js';
 import Order from '../model/Order.js';
 import asyncHandler from 'express-async-handler';
+import Stripe from 'stripe';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -75,6 +78,30 @@ export const createOrderCtrl = asyncHandler(async (req, res) => {
     );
 
     // Make payment with Stripe
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const createdOrderItems = orderItems.map(item => ({
+        price_data: {
+            currency: "usd", // Assuming USD, change as needed
+            product_data: {
+                name: item.name,
+                description: item.description || 'No description provided',
+            },
+            unit_amount: item.price * 100, // Stripe expects amount in cents
+        },
+        quantity: item.qty,
+    }));
+    const session = await stripe.checkout.sessions.create({
+        line_items: createdOrderItems,
+        metadata: {
+            orderId: JSON.stringify(order._id),
+        },
+        mode: 'payment',
+        success_url: 'https://localhost:7000/success',
+        cancel_url: 'https://localhost:7000/cancel',
+    });
+
+    res.redirect(303, session.url);
+
     // Payment webhook
     // Update the user order
     res.status(201).json({

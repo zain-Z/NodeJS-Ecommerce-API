@@ -111,3 +111,15 @@ export const createOrderCtrl = asyncHandler(async (req, res) => {
         user
     });
 });
+
+
+// @desc    Get all orders
+// @route   GET /api/orders
+// @access  Private
+export const getAllOrdersCtrl = asyncHandler(async (req, res) => {
+    const orders = await Order.find();
+    res.status(200).json({ 
+        orders, 
+        success: true,
+        msg: 'Orders retrieved successfully' });
+});

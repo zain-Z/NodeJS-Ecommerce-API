@@ -123,3 +123,20 @@ export const getAllOrdersCtrl = asyncHandler(async (req, res) => {
         success: true,
         msg: 'Orders retrieved successfully' });
 });
+
+// @desc    Get order by ID
+// @route   GET /api/orders/:id
+// @access  Private
+export const getOrderByIdCtrl = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const order = await Order.findById(id);
+    if (!order) {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+    res.status(200).json({
+        order,
+        success: true,
+        msg: 'Order retrieved successfully'
+    });
+});

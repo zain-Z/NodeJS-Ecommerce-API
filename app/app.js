@@ -41,7 +41,7 @@ app.post('/api/v1/payments/webhook', express.raw({ type: 'application/json' }), 
     const totalAmount = session.amount_total / 100; // Convert cents to dollars
     const currency = session.currency;
     // find the order by ID and update its status
-    const order = await Order.findByIdAndUpdate(orderId, {
+    const order = await Order.findByIdAndUpdate(JSON.parse(orderId), {
       paymentStatus,
       paymentMethod,
       totalAmount,

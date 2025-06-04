@@ -140,3 +140,23 @@ export const getOrderByIdCtrl = asyncHandler(async (req, res) => {
         msg: 'Order retrieved successfully'
     });
 });
+
+// @desc    Update order status
+// @route   PUT /api/orders/:id/status
+// @access  Private
+export const updateOrderStatusCtrl = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+    if (!order) {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+
+    res.status(200).json({
+        order,
+        success: true,
+        msg: 'Order status updated successfully'
+    });
+});

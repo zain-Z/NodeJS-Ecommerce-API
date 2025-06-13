@@ -10,6 +10,7 @@ import brandsRouter from '../routes/brandsRoute.js';
 import colorsRouter from '../routes/colorsRoute.js';
 import reviewsRouter from '../routes/reviewsRoute.js';
 import ordersRouter from '../routes/ordersRoute.js';
+import couponsRouter from '../routes/couponsRoute.js';
 import { globalErrorHandler, notFound } from '../middlewares/globalErrorHandler.js';
 
 const stripe = new Stripe(process.env.STRIPE_KEY);
@@ -77,7 +78,7 @@ app.use('/api/v1/brands/', brandsRouter);
 app.use('/api/v1/colors/', colorsRouter);
 app.use('/api/v1/reviews/', reviewsRouter);
 app.use('/api/v1/orders/', ordersRouter);
-
+app.use('/api/v1/coupons/', couponsRouter);
 
 // err middleware
 app.use(notFound);

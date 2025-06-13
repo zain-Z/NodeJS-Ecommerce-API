@@ -70,6 +70,7 @@ export const updateCouponCtrl = asyncHandler(async (req, res) => {
   const { name, discount, expiryDate } = req.body;
 
   const coupon = await Coupon.findByIdAndUpdate(id, {
+    code: name?.toUpperCase(), // Assuming 'name' is the coupon code
     name,
     discount,
     expiryDate,

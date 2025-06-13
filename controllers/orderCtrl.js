@@ -10,7 +10,32 @@ dotenv.config();
 // @route   POST /api/orders
 // @access  Private
 export const createOrderCtrl = asyncHandler(async (req, res) => {
-
+    // get the coupon
+    const { coupon } = req?.query;
+    // If coupon is provided, apply discount logic here
+    const couponFound = await Coupon.findOne({ code: coupon?.toUpperCase() })
+    // if coupon is expired
+    if (couponFound.isExpired) {
+        res.status(400);
+        throw new Error('Coupon is expired');
+    }
+    // if coupon is not found
+    if (!couponFound) {
+        res.status(400);
+        throw new Error('Coupon not found');
+    }
+    // if coupon is found, check if the user has used it before
+    const userHasUsedCoupon = user.usedCoupons.includes(couponFound._id);
+    if (userHasUsedCoupon) {
+        res.status(400);
+        throw new Error('User has already used this coupon');
+    }
+    // If the coupon is valid, apply the discount to the order
+    if (couponFound) {
+        // Assuming you want to apply the discount to the order total
+        // You can adjust this logic based on your requirements
+        req.body.discount = couponFound.discount/ 100; // Convert percentage to decimal
+    }
     // Get the payload(customer, order items, shipping address, payment method, currency)
     const { orderItems, shippingAddress, paymentMethod, currency } = req.body;
     if (!orderItems || !shippingAddress || !paymentMethod || !currency) {
@@ -44,7 +69,8 @@ export const createOrderCtrl = asyncHandler(async (req, res) => {
         orderItems,
         shippingAddress,
         paymentMethod,
-        currency
+        currency,
+        totalPrice: couponFound ? totalPrice * (1 - couponFound.discount / 100) : totalPrice,
     });
 
     const createdOrder = await order.save();

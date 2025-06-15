@@ -43,7 +43,7 @@ export const createProductCtrl = asyncHandler(async (req, res) => {
         sizes,
         colors,
         totalQty,
-        user: req.userAuthId
+        user: req.userAuthId,
     });
 
     // push product to category

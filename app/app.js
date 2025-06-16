@@ -13,7 +13,7 @@ import ordersRouter from '../routes/ordersRoute.js';
 import couponsRouter from '../routes/couponsRoute.js';
 import { globalErrorHandler, notFound } from '../middlewares/globalErrorHandler.js';
 
-const stripe = new Stripe(process.env.STRIPE_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // db connection

@@ -186,3 +186,94 @@ export const updateOrderStatusCtrl = asyncHandler(async (req, res) => {
         msg: 'Order status updated successfully'
     });
 });
+
+
+// @desc    Delete order
+// @route   DELETE /api/orders/:id
+// @access  Private
+export const deleteOrderCtrl = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const order = await Order.findByIdAndDelete(id);
+    if (!order) {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+    res.status(200).json({
+        success: true,
+        msg: 'Order deleted successfully'
+    });
+});
+
+
+// @desc    get sales summary of orders
+// @route   GET /api/v1/orders/sales/summary
+// @access  Private/Admin
+export const getSalesSummaryCtrl = asyncHandler(async (req, res) => {
+    const salesSum = await Order.aggregate([
+        {
+            $group: {
+                _id: null,
+                totalSales: { $sum: '$totalPrice' },
+                avgOrderAmount: { $avg: '$totalPrice' },
+                minOrderAmount: { $min: '$totalPrice' },
+                maxOrderAmount: { $max: '$totalPrice' }
+            }
+        }
+    ]);
+
+    if (!salesSum || salesSum.length === 0) {
+        res.status(404);
+        throw new Error('No sales data found');
+    }
+
+    res.status(200).json({
+        success: true,
+        totalSales: salesSum[0].totalSales,
+        avgOrderAmount: salesSum[0].avgOrderAmount,
+        minOrderAmount: salesSum[0].minOrderAmount,
+        maxOrderAmount: salesSum[0].maxOrderAmount
+    });
+});
+
+
+// @desc    Get today's sales summary
+// @route   GET /api/v1/orders/sales/summary/today
+// @access  Private/Admin
+export const getTodaysSalesSummaryCtrl = asyncHandler(async (req, res) => {
+    const today = new Date();
+    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+
+    const salesSum = await Order.aggregate([
+        {
+            $match: {
+                createdAt: {
+                    $gte: startOfDay,
+                    $lte: endOfDay
+                }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                totalSales: { $sum: '$totalPrice' },
+                avgOrderAmount: { $avg: '$totalPrice' },
+                minOrderAmount: { $min: '$totalPrice' },
+                maxOrderAmount: { $max: '$totalPrice' }
+            }
+        }
+    ]);
+
+    if (!salesSum || salesSum.length === 0) {
+        res.status(404);
+        throw new Error('No sales data found');
+    }
+
+    res.status(200).json({
+        success: true,
+        totalSales: salesSum[0].totalSales,
+        avgOrderAmount: salesSum[0].avgOrderAmount,
+        minOrderAmount: salesSum[0].minOrderAmount,
+        maxOrderAmount: salesSum[0].maxOrderAmount
+    });
+});

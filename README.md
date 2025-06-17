@@ -150,3 +150,6 @@ This project is intended for **educational purposes only**.
 Usage in commercial applications is subject to the terms and licensing of project content author.
 
 ---
+
+## To view the API : [ Link ](https://documenter.getpostman.com/view/37626601/2sB2x8GCFK)
+## Deployed on render : [ Link ](https://nodejs-ecommerce-api-fk4h.onrender.com/api/v1/products)
